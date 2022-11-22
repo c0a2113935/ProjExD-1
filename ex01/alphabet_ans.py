@@ -1,3 +1,5 @@
+# 授業講師のプログラムのコピペ
+
 import random
 import time
 
