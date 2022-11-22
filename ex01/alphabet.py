@@ -55,7 +55,7 @@ def fuseikai():
 
 
 if __name__ == "__main__":
-    st=time.time()
+    st = time.time()
     alphabet_show()
-    ed=time.time()
+    ed = time.time()
     print(f"プログラムの実行に{(ed-st):.2f}秒かかりました")
