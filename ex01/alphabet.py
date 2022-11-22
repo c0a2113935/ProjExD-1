@@ -1,9 +1,11 @@
 import random
 import time
-count = 0
-max = 5
-taisyou_number = 10
-kesson_number = 2
+
+alphabet = [chr(i + 65) for i in range(26)] #アルファベットリスト
+count = 0 #繰り返しカウント変数
+max = 5 #最大繰り返し回数
+taisyou_number = 10 #対象文字数
+kesson_number = 2 #欠損文字数
 
 def alphabet_show():
     global count
@@ -11,18 +13,15 @@ def alphabet_show():
     if count > max:
         print("最大繰り返し回数をオーバーしました。")
         return
-    x = random.sample(range(65, 91), taisyou_number)
-    taisyou_lst = []
-    for i in x:
-        taisyou_lst.append(chr(i))
+    taisyou_lst = random.sample(alphabet, taisyou_number)
     hyouji_lst = taisyou_lst.copy()
     taisyou_lst.sort()
     hyoji_lst = random.sample(hyouji_lst, (taisyou_number-kesson_number))
     kesson_lst = list(set(taisyou_lst) ^ set(hyoji_lst))
     print("対象文字：")
     print(" ".join(taisyou_lst))
-    print("欠損文字（デバッグ用）：")
-    print(" ".join(kesson_lst))
+    #print("欠損文字（デバッグ用）：")
+    #print(" ".join(kesson_lst))
     print("表示文字：")
     print(" ".join(hyoji_lst))
     print()
@@ -53,6 +52,7 @@ def fuseikai():
     print("不正解です。またチャレンジしてください")
     print("-" * 20)
     alphabet_show()
+
 
 if __name__ == "__main__":
     st=time.time()
