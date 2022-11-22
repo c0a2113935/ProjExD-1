@@ -1,4 +1,5 @@
 import random
+import datetime
 
 def shutudai(qa_lst):
     qa = random.choice(qa_lst)
@@ -6,11 +7,14 @@ def shutudai(qa_lst):
     return qa["a"]
 
 def kaitou(ans_lst):
+    st = datetime.datetime.now()
     ans = input("答えを入力してください：")
+    ed = datetime.datetime.now()
     if ans in ans_lst:
         print("正解！！！")
     else:
         print("不正解です･･･")
+    #print("解答時間：" + (ed-st).seconds)
 
 if __name__ == "__main__":
     qa_lst = [
