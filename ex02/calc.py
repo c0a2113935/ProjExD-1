@@ -56,7 +56,7 @@ def button_click(event):
     elif num == "R3":
         txt = entry.get() #入力欄の値を取得
         try:
-            ans = decimal_normalize(round((float(txt)), 3)) #入力欄の値の平方根を計算する
+            ans = decimal_normalize(round((float(txt)), 3)) #入力欄の値の小数点第３位で丸める
             entry.delete(0, tk.END) #入力欄の削除
             entry.insert(tk.END, ans) #計算結果を入力欄に戻す
         except:
