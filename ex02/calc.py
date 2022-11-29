@@ -1,9 +1,6 @@
 import tkinter as tk
 import tkinter.messagebox as tkm
 
-def msg():
-    tkm.showinfo("のボタン", "１のボタンがクリックされました。")
-
 root = tk.Tk()
 root.geometry("300x500")
 
