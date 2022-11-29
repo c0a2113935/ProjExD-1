@@ -4,11 +4,18 @@ import math
 from decimal import Decimal, Context
 
 # ボタンがクリックされた時の挙動
+
 def button_click(event):
     btn = event.widget
     num = btn["text"]
+    txt = entry.get() #入力欄の値を取得
+    if num=="÷" or num=="×" or num=="-" or num=="+":
+        try:
+            if txt[-1]=="÷" or txt[-1]=="×" or txt[-1]=="-" or txt[-1]=="+":
+                return
+        except:
+            pass
     if num == "=": #「=」が押された時
-        txt = entry.get() #入力欄の値を取得
         txt = txt.replace("÷", "/")
         txt = txt.replace("×", "*")
         ans = decimal_normalize(eval(txt)) #入力欄の値を評価、計算
@@ -17,7 +24,6 @@ def button_click(event):
     elif num == "AC":
         entry.delete(0, tk.END)
     elif num == "C":
-        txt = entry.get() #入力欄の値を取得
         ans = txt[0:-1]
         entry.delete(0, tk.END) #入力欄の削除
         entry.insert(tk.END, ans) #計算結果を入力欄に戻す
