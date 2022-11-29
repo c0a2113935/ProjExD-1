@@ -1,6 +1,27 @@
 import tkinter as tk
+import tkinter.messagebox as tkm
 
 root = tk.Tk()
 root.geometry("300x500")
+Button9 = tk.Button(root, text="9", width=4, height=2, font=("Times New Roman", 30))
+Button8 = tk.Button(root, text="8", width=4, height=2, font=("Times New Roman", 30))
+Button7 = tk.Button(root, text="7", width=4, height=2, font=("Times New Roman", 30))
+Button6 = tk.Button(root, text="6", width=4, height=2, font=("Times New Roman", 30))
+Button5 = tk.Button(root, text="5", width=4, height=2, font=("Times New Roman", 30))
+Button4 = tk.Button(root, text="4", width=4, height=2, font=("Times New Roman", 30))
+Button3 = tk.Button(root, text="3", width=4, height=2, font=("Times New Roman", 30))
+Button2 = tk.Button(root, text="2", width=4, height=2, font=("Times New Roman", 30))
+Button1 = tk.Button(root, text="1", width=4, height=2, font=("Times New Roman", 30))
+Button0 = tk.Button(root, text="0", width=4, height=2, font=("Times New Roman", 30))
+Button9.grid(column=0, row=0)
+Button8.grid(row=0, column=1)
+Button7.grid(row=0, column=2)
+Button6.grid(row=1, column=0)
+Button5.grid(row=1, column=1)
+Button4.grid(row=1, column=2)
+Button3.grid(row=2, column=0)
+Button2.grid(row=2, column=1)
+Button1.grid(row=2, column=2)
+Button0.grid(row=3, column=0)
 
 root.mainloop()
