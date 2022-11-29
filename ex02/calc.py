@@ -9,7 +9,7 @@ def button_click(event):
     btn = event.widget
     num = btn["text"]
     txt = entry.get() #入力欄の値を取得
-    if num=="÷" or num=="×" or num=="-" or num=="+":
+    if num=="÷" or num=="×" or num=="-" or num=="+": #四則演算を連続で入力させない
         try:
             if txt[-1]=="÷" or txt[-1]=="×" or txt[-1]=="-" or txt[-1]=="+":
                 return
