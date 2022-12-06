@@ -26,14 +26,17 @@ if __name__ == "__main__":
     root = tk.Tk()
     root.title("迷えるこうかとん")
     canvas = tk.Canvas(root, width=1500, height=900, bg="black")
+    canvas.pack()
+
+    maze_list = maze_maker.make_maze(15, 9)
+    maze_maker.show_maze(canvas, maze_list)
+
     cx = 300 #横座標
     cy = 400 #縦座標
     img = tk.PhotoImage(file="fig/8.png")
     canvas.create_image(cx, cy, image=img, tag="kokaton")
-
     key = ""
-    main_proc()
     root.bind("<KeyPress>", key_down)
     root.bind("<KeyRelease>", key_up)
-    canvas.pack()
+    main_proc()
     root.mainloop()
