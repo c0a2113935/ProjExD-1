@@ -9,6 +9,8 @@ if __name__ == "__main__":
     cy = 400 #縦座標
     img = tk.PhotoImage(file="fig/8.png")
     canvas.create_image(cx, cy, image=img, tag="kokaton")
-    
+
+    key = ""
+
     canvas.pack()
     root.mainloop()
