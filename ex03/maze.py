@@ -1,4 +1,5 @@
 import tkinter as tk
+import tkinter.messagebox as tkm
 import random
 import maze_maker
 from PIL import Image, ImageTk
@@ -30,7 +31,6 @@ def main_proc():
             cx += 100
             mx += 1
     canvas.coords("kokaton", cx, cy)
-    root.after(100, main_proc)
 
     if mx == a and my == b: #つるはしと重なったら
         turuhasi()
@@ -45,9 +45,15 @@ def main_proc():
             index = 2
             canvas.delete("kokaton")
             canvas.create_image(cx, cy, image=photos[index], tag="kokaton")
+    
+    if mx==meiro_x-2 and my==meiro_y-2:
+        tkm.showinfo("おめでとう！", "ゴールにたどり着きました")
+    else:
+        root.after(100, main_proc)
+
 
 def turuhasi():
-    global index, kokaton_haves
+    global index
     canvas.delete(item) #つるはし削除
     index = 1
     canvas.delete("kokaton")
@@ -68,10 +74,18 @@ if __name__ == "__main__":
     cx = mx*100 + 50 #横座標
     cy = my*100 + 50 #縦座標
     a = random.randint(1, meiro_x-1)
-    b = maze_list[a].index(0)
-    # ランダムでつるはしが迷路に現れる
-    img_turuhasi = tk.PhotoImage(file="fig/turuhasi.png")
-    item = canvas.create_image(a*100+50, b*100+50, image=img_turuhasi, tag="turuhasi")
+    try:
+        b = maze_list[a].index(0)
+        # ランダムでつるはしが迷路に現れる
+        img_turuhasi = tk.PhotoImage(file="fig/turuhasi.png")
+        item = canvas.create_image(a*100+50, b*100+50, image=img_turuhasi, tag="turuhasi")
+    except:
+        pass
+
+    # ゴールの表示
+    img_goal = tk.PhotoImage(file="fig/goal.png")
+    goal_item = canvas.create_image((meiro_x-2)*100+50, (meiro_y-2)*100+50, image=img_goal, tag="goal")
+
 
     canvas.create_image(cx, cy, image=photos[index], tag="kokaton")
     key = ""
