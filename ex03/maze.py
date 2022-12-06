@@ -10,15 +10,23 @@ def key_up(event):
     key = ""
 
 def main_proc():
-    global cx, cy
+    global cx, cy, mx, my
     if key == "Up":
-        cy -= 20
+        if maze_list[mx][my-1] == 0:
+            cy -= 100
+            my -= 1
     elif key == "Down":
-        cy += 20
+        if maze_list[mx][my+1] == 0:
+            cy += 100
+            my += 1
     elif key == "Left":
-        cx -= 20
+        if maze_list[mx-1][my] == 0:
+            cx -= 100
+            mx -= 1
     elif key == "Right":
-        cx += 20
+        if maze_list[mx+1][my] == 0:
+            cx += 100
+            mx += 1
     canvas.coords("kokaton", cx, cy)
     root.after(100, main_proc)
 
@@ -31,8 +39,9 @@ if __name__ == "__main__":
     maze_list = maze_maker.make_maze(15, 9)
     maze_maker.show_maze(canvas, maze_list)
 
-    cx = 300 #横座標
-    cy = 400 #縦座標
+    mx, my = 1, 1
+    cx = mx*100 + 50 #横座標
+    cy = my*100 + 50 #縦座標
     img = tk.PhotoImage(file="fig/8.png")
     canvas.create_image(cx, cy, image=img, tag="kokaton")
     key = ""
