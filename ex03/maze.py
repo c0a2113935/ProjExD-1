@@ -31,9 +31,9 @@ def main_proc():
             cx += 100
             mx += 1
     canvas.coords("kokaton", cx, cy)
-
-    if mx == a and my == b: #つるはしと重なったら
-        turuhasi()
+    if kokaton_have == False:
+        if mx == a and my == b: #つるはしと重なったら
+            turuhasi()
     if index==1:
         if key == "space":
             if maze_list[mx+1][my] == 1: maze_list[mx+1][my] = 0
@@ -53,11 +53,12 @@ def main_proc():
 
 
 def turuhasi():
-    global index
+    global index, kokaton_have
     canvas.delete(item) #つるはし削除
     index = 1
     canvas.delete("kokaton")
     canvas.create_image(cx, cy, image=photos[index], tag="kokaton")
+    kokaton_have = True
 
 if __name__ == "__main__":
     root = tk.Tk()
@@ -69,6 +70,7 @@ if __name__ == "__main__":
     maze_maker.show_maze(canvas, maze_list)
 
     photos = [tk.PhotoImage(file="fig/8.png"), tk.PhotoImage(file="fig/turuhasi_bird.png"), tk.PhotoImage(file="fig/6.png")]
+    kokaton_have = False
     index = 0
     mx, my = 1, 1
     cx = mx*100 + 50 #横座標
