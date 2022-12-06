@@ -1,5 +1,7 @@
 import tkinter as tk
+import random
 import maze_maker
+from PIL import Image, ImageTk
 
 def key_down(event):
     global key
@@ -10,7 +12,7 @@ def key_up(event):
     key = ""
 
 def main_proc():
-    global cx, cy, mx, my
+    global cx, cy, mx, my, index
     if key == "Up":
         if maze_list[mx][my-1] == 0:
             cy -= 100
@@ -30,21 +32,50 @@ def main_proc():
     canvas.coords("kokaton", cx, cy)
     root.after(100, main_proc)
 
+    if mx == a and my == b: #つるはしと重なったら
+        turuhasi()
+    if index==1:
+        if key == "space":
+            if maze_list[mx+1][my] == 1: maze_list[mx+1][my] = 0
+            elif maze_list[mx][my+1] == 1: maze_list[mx][my+1] = 0
+            elif maze_list[mx][my-1] == 1: maze_list[mx][my-1] = 0
+            elif maze_list[mx-1][my] == 1: maze_list[mx-1][my] = 0
+            else:
+                pass
+            index = 2
+            canvas.delete("kokaton")
+            canvas.create_image(cx, cy, image=photos[index], tag="kokaton")
+
+def turuhasi():
+    global index, kokaton_haves
+    canvas.delete(item) #つるはし削除
+    index = 1
+    canvas.delete("kokaton")
+    canvas.create_image(cx, cy, image=photos[index], tag="kokaton")
+
 if __name__ == "__main__":
     root = tk.Tk()
     root.title("迷えるこうかとん")
     canvas = tk.Canvas(root, width=1500, height=900, bg="black")
     canvas.pack()
-
-    maze_list = maze_maker.make_maze(15, 9)
+    meiro_x, meiro_y = 15, 9
+    maze_list = maze_maker.make_maze(meiro_x, meiro_y)
     maze_maker.show_maze(canvas, maze_list)
 
+    photos = [tk.PhotoImage(file="fig/8.png"), tk.PhotoImage(file="fig/turuhasi_bird.png"), tk.PhotoImage(file="fig/6.png")]
+    index = 0
     mx, my = 1, 1
     cx = mx*100 + 50 #横座標
     cy = my*100 + 50 #縦座標
-    img = tk.PhotoImage(file="fig/8.png")
-    canvas.create_image(cx, cy, image=img, tag="kokaton")
+    a = random.randint(1, meiro_x-1)
+    b = maze_list[a].index(0)
+    # ランダムでつるはしが迷路に現れる
+    img_turuhasi = tk.PhotoImage(file="fig/turuhasi.png")
+    item = canvas.create_image(a*100+50, b*100+50, image=img_turuhasi, tag="turuhasi")
+
+    canvas.create_image(cx, cy, image=photos[index], tag="kokaton")
     key = ""
+    
     root.bind("<KeyPress>", key_down)
     root.bind("<KeyRelease>", key_up)
     main_proc()
