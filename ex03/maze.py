@@ -47,10 +47,11 @@ def main_proc():
             canvas.create_image(cx, cy, image=photos[index], tag="kokaton")
     
     if mx==meiro_x-2 and my==meiro_y-2:
-        tkm.showinfo("おめでとう！", "ゴールにたどり着きました")
+        if tkm.showinfo("おめでとう！", "ゴールにたどり着きました") == "ok":
+            root.destroy()
     else:
         root.after(100, main_proc)
-
+ 
 
 def turuhasi():
     global index, kokaton_have
