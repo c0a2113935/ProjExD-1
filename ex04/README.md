@@ -1,5 +1,8 @@
 # 第４回
 ## 逃げろこうかとん
+![image](https://user-images.githubusercontent.com/85731445/207264889-773f6e7f-7fa6-4d69-8d84-14f73e4a387d.png)
+
+![image](https://user-images.githubusercontent.com/85731445/207264733-0185e795-958b-42f1-a592-340a97037868.png)
 ### ゲーム概要
 - ex04/dodge_bomb.pyを実行すると、800×450のスクリーンに草原が描写され、こうかとんを移動させ飛び回る爆弾から逃げるゲーム
 - こうかとんが爆弾と接触するとゲームオーバーで終了する
