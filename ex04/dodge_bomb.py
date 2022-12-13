@@ -37,7 +37,7 @@ def main():
     # 爆弾の描画設定
     bomb_sfc = pg.Surface((20, 26))     # 正方形の空のSurface
     bomb_sfc.set_colorkey((0, 0, 0))
-    circle = pg.draw.circle(bomb_sfc, "red", (10, 16), 10)      # 爆弾の丸部分を描画
+    circle = pg.draw.circle(bomb_sfc, (1, 1, 1), (10, 16), 10)      # 爆弾の丸部分を描画
     cord = pg.draw.rect(bomb_sfc, "red", (8, 0, 4, 8))   # 爆弾の紐部分を描画
     bomb_rct = bomb_sfc.get_rect()
 
