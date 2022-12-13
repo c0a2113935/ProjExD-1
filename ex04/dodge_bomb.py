@@ -5,6 +5,10 @@ import time
 
 
 def main():
+    # 設定変数
+    bomb_number = 5     # 爆弾の総個数
+    v = 1  # 爆弾の初速度
+
     # ウィンドウ設定
     (w, h) = (int(1600/2), int(900/2))             # 画面サイズ
     pg.init()                       # pygameの初期化
@@ -12,22 +16,20 @@ def main():
     screen = pg.display.get_surface()
     scrn_rct = screen.get_rect()
     pg.display.set_caption("逃げろ！こうかとん")    # ウィンドウのタイトル設定
-    bg = pg.image.load("fig/pg_bg.jpg")  # 背景画像取得
-    bg = pg.transform.rotozoom(bg, 0, 0.5)
-    rect_bg = bg.get_rect()
+    bg = pg.image.load("fig/pg_bg.jpg")     # 背景画像取得
+    bg = pg.transform.rotozoom(bg, 0, 0.5)  # 背景画像を0.5倍の大きさにする
+    rect_bg = bg.get_rect()                 # 背景画像のrect
     (cx, cy) = (w/2, h/2)   # キャラクターの座標
     tori = pg.image.load("fig/3.png")
     tori_cry = pg.image.load("fig/8.png")
     #animal = pg.transform.rotozoom(animal, 0, 0.2)
 
-    bomb_number = 5     # 爆弾の総個数
+    
     bomb_draw = 1       # 爆弾の描画個数
-
     seqx = list(range(10, int(cx)-80)) + list(range(int(cx)+80, w-10))    # キャラクターの初期位置を避けたx座標のリスト
     seqy = list(range(10, int(cy)-80)) + list(range(int(cy)+80, h-10))    # キャラクターの初期位置を避けたy座標のリスト
     random_x = [random.choice(seqx) for i in range(bomb_number)]    # 爆弾の初期位置のx座標のリスト
     random_y = [random.choice(seqy) for i in range(bomb_number)]    # 爆弾の初期位置のy座標のリスト
-    v = 1  # 初期速度
     l = [-v, v]
     vx = random.choices(l, k=bomb_number)   # x座標の進む方向リスト
     vy = random.choices(l, k=bomb_number)   # y座標の進む方向リスト
