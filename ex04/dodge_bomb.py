@@ -13,7 +13,7 @@ def main():
     (w, h) = (int(1600/2), int(900/2))             # 画面サイズ
     pg.init()                       # pygameの初期化
     pg.display.set_mode((w, h))     # 画面設定
-    screen = pg.display.get_surface()
+    screen = pg.display.get_surface()       # surface
     scrn_rct = screen.get_rect()
     pg.display.set_caption("逃げろ！こうかとん")    # ウィンドウのタイトル設定
     bg = pg.image.load("fig/pg_bg.jpg")     # 背景画像取得
