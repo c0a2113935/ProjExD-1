@@ -45,10 +45,11 @@ def main():
     end_text_rect = end_text.get_rect(center=(w//2, h//2))
     font2 = pg.font.Font(None, 60)
 
-    timer_hantei1 = 0  # 特定のタイマーの値を一時的に保持するための変数1
-    timer_hantei2 = 0  # 特定のタイマーの値を一時的に保持するための変数2
+    timer_hantei1 = 0   # 特定のタイマーの値を一時的に保持するための変数1
+    timer_hantei2 = 0   # 特定のタイマーの値を一時的に保持するための変数2
+    score = 0           # ゲームスコアを格納する変数
 
-    start(screen, bg, rect_bg, w, h)    # スタート画面の表示
+    start(screen, bg, rect_bg, w, h, score)    # スタート画面の表示
     last_game_ended = int(pg.time.get_ticks()/1000)     # スタートまでの経過時間を格納
 
 
@@ -130,10 +131,12 @@ def main():
                 screen.blit(end_text, end_text_rect)    # Game Overのテキスト
                 pg.display.update()         # 画面更新
                 time.sleep(2)               # 2秒後に以下を実行
-
+                
+                if score < timer:       # timerがscoreより大きかったら
+                    score = timer       # 最高スコア更新
                 bg = pg.image.load("fig/pg_bg.jpg")  # 背景の再設定
                 bg = pg.transform.rotozoom(bg, 0, 0.5)
-                start(screen, bg, rect_bg, w, h)        # スタート画面の関数
+                start(screen, bg, rect_bg, w, h, score)        # スタート画面の関数
 
                 # 変数の初期化
                 (cx, cy) = (w/2, h/2)
@@ -163,17 +166,21 @@ def check_bound(obj_rct, scr_rct):
 
 
 # スタート画面の処理関数
-def start(screen, bg, rect_bg, w, h):
+def start(screen, bg, rect_bg, w, h, score):
     font = pg.font.SysFont("hg正楷書体pro", 70)                         # フォント設定
+    font2 = pg.font.SysFont("hg正楷書体pro", 30)                         # フォント設定
     title_text = font.render("逃げろ！こうかとん", True, "darkgreen")    # ゲームタイトルテキスト
     title_text_rect = title_text.get_rect(center=(w//2, h//2-100))      # タイトルrect
     start_text = font.render("Start", True, "seagreen")                 # スタートボタンテキスト
     start_text_rect = start_text.get_rect(center=(w//2, h//2+90))       # スタートrect
+    score_text = font2.render("スコア：" + str(score), True, "blue")                   # スコアテキスト
+    score_text_rect = score_text.get_rect()            # スコアrect
 
     while True:
         pg.display.update()         # 画面更新
         pg.time.wait(30)            # 更新時間感覚
         screen.blit(bg, rect_bg)    # 背景画像の描画
+        screen.blit(score_text, score_text_rect)    # スコアのテキスト
         screen.blit(title_text, title_text_rect)    # ゲームタイトルのテキスト
         pg.draw.rect(screen, "white", (150, h/2+50, w-300, 80))     # スタートボタン用の白い四角形を描画
         screen.blit(start_text, start_text_rect)    # ゲームスタートのテキスト
