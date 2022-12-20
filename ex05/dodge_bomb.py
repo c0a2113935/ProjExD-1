@@ -58,8 +58,8 @@ class Bomb:
         self.sfc.set_colorkey((0, 0, 0))
         pg.draw.circle(self.sfc, color, (rad, rad), rad)
         self.rct = self.sfc.get_rect()
-        self.rct.centerx = random.randint(3, scr.rct.width-3)
-        self.rct.centery = random.randint(3, scr.rct.height-3)
+        self.rct.centerx = random.randint(10, scr.rct.width-10)
+        self.rct.centery = random.randint(10, scr.rct.height-10)
         #self.vx = vxy[0]
         #self.vy = vxy[1]
         self.vx, self.vy = vxy
@@ -246,18 +246,19 @@ def main():
                 if Bomb.hantei[bombs[i].count]:
                     Bomb.hantei[bombs[i].count] = False
                     bomb_count += 1
+            
+            if bomb_count == bomb_number:
+                if True not in Bomb.hantei:
+                    count_text.update(str(bomb_count)+"/"+str(bomb_number), scr)
+                    clear_text.blit(scr)    # Game Clearのテキスト
+                    pg.display.update()         # 画面更新
+                    time.sleep(2)               # 2秒後に以下を実行
+                    return
         
         # 一定時間毎に描画する爆弾の数を増やす
         if int(tim.timer) % 3 == 0 and bomb_draw < bomb_number and timer_hantei != tim.timer:
             bomb_draw += 1
             timer_hantei = tim.timer
-        
-        if bomb_count == bomb_number:
-            if True not in Bomb.hantei:
-                clear_text.blit(scr)    # Game Clearのテキスト
-                pg.display.update()         # 画面更新
-                time.sleep(2)               # 2秒後に以下を実行
-                return
 
         pg.display.update()
         clock.tick(1000)
