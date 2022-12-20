@@ -161,6 +161,11 @@ def check_bound(obj_rct, scr_rct):
 
 ### メイン関数
 def main():
+    # 爆弾の総個数
+    bomb_number = 30
+    # 何秒ごとに爆弾が増える
+    bomb_plus = 1
+
     clock = pg.time.Clock()
 
     # 練習１
@@ -174,7 +179,6 @@ def main():
     kkt.blit(scr)
 
     # 練習５（爆弾の作成）
-    bomb_number = 10     # 爆弾の総個数
     bomb_draw = 1       # 爆弾の描画個数
     timer_hantei = 0    # 時間判定のための変数
     bombs = []
@@ -192,7 +196,7 @@ def main():
 
     # カウントテキスト
     bomb_count = 0
-    count_text = Text(font, str(bomb_count)+"/"+str(bomb_number), (w-60, 30), "darkgreen", scr)
+    count_text = Text(font, str(bomb_count)+"/"+str(bomb_number), (w-65, 30), "darkgreen", scr)
 
     # 攻撃の作成
     gun = Shot("fig/shot.png")
@@ -231,6 +235,14 @@ def main():
         kkt.update(scr)
         gun.update(scr)
         count_text.update(str(bomb_count)+"/"+str(bomb_number), scr)
+
+        # クリア判定（破壊した爆弾の個数==爆弾総数）
+        if bomb_count == bomb_number:
+                if True not in Bomb.hantei:
+                    clear_text.blit(scr)    # Game Clearのテキスト
+                    pg.display.update()         # 画面更新
+                    time.sleep(2)               # 2秒後に以下を実行
+                    return
         
         for i in range(bomb_draw):
             # こうかとんと爆弾の衝突判定
@@ -246,17 +258,9 @@ def main():
                 if Bomb.hantei[bombs[i].count]:
                     Bomb.hantei[bombs[i].count] = False
                     bomb_count += 1
-            
-            if bomb_count == bomb_number:
-                if True not in Bomb.hantei:
-                    count_text.update(str(bomb_count)+"/"+str(bomb_number), scr)
-                    clear_text.blit(scr)    # Game Clearのテキスト
-                    pg.display.update()         # 画面更新
-                    time.sleep(2)               # 2秒後に以下を実行
-                    return
         
         # 一定時間毎に描画する爆弾の数を増やす
-        if int(tim.timer) % 3 == 0 and bomb_draw < bomb_number and timer_hantei != tim.timer:
+        if int(tim.timer) % bomb_plus == 0 and bomb_draw < bomb_number and timer_hantei != tim.timer:
             bomb_draw += 1
             timer_hantei = tim.timer
 
