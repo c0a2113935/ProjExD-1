@@ -1,6 +1,7 @@
 import pygame as pg
 import sys
 import random
+from pygame.locals import * 
 import time
 
 
@@ -50,43 +51,97 @@ class Bird:
 
 ### Bombクラス
 class Bomb:
+    count = 0
+    hantei = []
     def __init__(self, color, rad, vxy, scr:Screen):
         self.sfc = pg.Surface((2*rad, 2*rad)) # 正方形の空のSurface
         self.sfc.set_colorkey((0, 0, 0))
         pg.draw.circle(self.sfc, color, (rad, rad), rad)
         self.rct = self.sfc.get_rect()
-        self.rct.centerx = random.randint(0, scr.rct.width)
-        self.rct.centery = random.randint(0, scr.rct.height)
+        self.rct.centerx = random.randint(3, scr.rct.width-3)
+        self.rct.centery = random.randint(3, scr.rct.height-3)
         #self.vx = vxy[0]
         #self.vy = vxy[1]
         self.vx, self.vy = vxy
+        self.count = Bomb.count
+        Bomb.hantei.append(True)
+        Bomb.count += 1
 
     def blit(self, scr:Screen):
         scr.sfc.blit(self.sfc, self.rct)
     
     def update(self, scr:Screen):
-        self.rct.move_ip(self.vx, self.vy)
-        yoko, tate = check_bound(self.rct, scr.rct)
-        self.vx *= yoko
-        self.vy *= tate
-        self.blit(scr)
+        if Bomb.hantei[self.count]:
+            self.rct.move_ip(self.vx, self.vy)
+            yoko, tate = check_bound(self.rct, scr.rct)
+            self.vx *= yoko
+            self.vy *= tate
+            self.blit(scr)
 
 
+# Timerクラス
 class Timer:
-    def __init__(self, font2, last_game_ended=0):
-        self.last_game_ended = last_game_ended
-        self.timer = int(pg.time.get_ticks()/1000) - self.last_game_ended
-        self.text = font2.render(str(self.timer), True, "red")
+    def __init__(self, font):
+        self.font = font
+        self.timer = int(pg.time.get_ticks()/1000)
+        self.text = self.font.render(str(self.timer), True, "red")
         self.rct = self.text.get_rect(center=(40, 30))
+
+    def update(self, scr:Screen):
+        self.timer = int(pg.time.get_ticks()/1000)
+        self.text = self.font.render(str(self.timer), True, "red")
+        scr.sfc.blit(self.text, self.rct)    # タイマーのテキスト
+
+
+### Shotクラス（攻撃）
+class Shot(pg.sprite.Sprite):
+    speed = -11
+    hantei = True
+    def __init__(self, image):
+        self.sfc = pg.image.load(image)
+        self.sfc = pg.transform.rotozoom(self.sfc, 0, 0.05)    # 拡大縮小
+        self.rct = self.sfc.get_rect()
+        self.x, self.y = -5, -5
     
     def blit(self, scr:Screen):
-        self.timer = int(pg.time.get_ticks()/1000) - Timer.last_game_ended
-        scr.blit(self.text, self.text_rect)    # タイマーのテキスト
+        scr.sfc.blit(self.sfc, self.rct)
     
-    def update(self, last_game_ended, scr:Screen):
-        self.last_game_ended = last_game_ended
-        self.timer = int(pg.time.get_ticks()/1000) - Timer.last_game_ended
-        scr.blit(self.text, self.text_rect)    # タイマーのテキスト
+    def go(self, scr:Screen, bird:Bird):
+        if Shot.hantei:
+            Shot.hantei = False
+            self.x = bird.rct.centerx
+            self.y = bird.rct.centery
+            self.rct.center = (self.x, self.y)
+            self.blit(scr)
+    
+    def update(self, scr:Screen):
+        if Shot.hantei != True:
+            if self.y < -10:
+                Shot.hantei = True
+                return
+            self.y += Shot.speed
+            self.rct.move_ip(0, Shot.speed)
+            self.blit(scr)
+        else:
+            self.rct.move(-100, -100)
+
+
+# Textクラス
+class Text:
+    def __init__(self, font, txt, xy, color, scr:Screen):
+        self.font = font
+        self.color = color
+        self.timer = int(pg.time.get_ticks()/1000)
+        self.text = self.font.render(str(txt), True, self.color)
+        self.rct = self.text.get_rect()
+        self.rct.center = xy 
+
+    def blit(self, scr:Screen):
+        scr.sfc.blit(self.text, self.rct)    # タイマーのテキスト
+    
+    def update(self, txt, scr:Screen):
+        self.text = self.font.render(str(txt), True, self.color)
+        scr.sfc.blit(self.text, self.rct)
 
 
 ### チェック関数
@@ -119,27 +174,90 @@ def main():
     kkt.blit(scr)
 
     # 練習５（爆弾の作成）
-    bkd = Bomb((255, 0, 0), 10, (+1, +1), scr)
-    bkd.update(scr)
+    bomb_number = 10     # 爆弾の総個数
+    bomb_draw = 1       # 爆弾の描画個数
+    timer_hantei = 0    # 時間判定のための変数
+    bombs = []
+    # 色をランダムで生成
+    colors = ["#"+''.join([random.choice('0123456789ABCDEF') for j in range(6)]) for i in range(bomb_number)]
+    for i in range(bomb_number):
+        color = colors[i]
+        vx = random.choice([-1, +1])
+        vy = random.choice([-1, +1])
+        bombs.append(Bomb(color, 10, (vx, vy), scr))
 
-    # フォント
-    font2 = pg.font.Font(None, 60)
+    # 時間の作成
+    font = pg.font.Font(None, 60)
+    tim = Timer(font)
 
+    # カウントテキスト
+    bomb_count = 0
+    count_text = Text(font, str(bomb_count)+"/"+str(bomb_number), (w-60, 30), "darkgreen", scr)
+
+    # 攻撃の作成
+    gun = Shot("fig/shot.png")
+
+    # ゲームオーバー
+    font = pg.font.Font(None, 120)
+    end_text = Text(font, "Game Over", (w/2 ,h/2), "red", scr)
+
+    # クリア
+    clear_text = Text(font, "Game Clear", (w/2, h/2), "blue", scr)
 
     while True:
         scr.blit()      # scrn_sfc.blit()
+        # タイマーの表示
+        tim.update(scr)
+
+        # 処理が重すぎて断念
+        """
+        # 30秒経ったら背景の変更
+        if tim.timer >= 15:
+            scr.bgi_sfc = pg.image.load("fig/hell.jpg")
+            scr.bgi_sfc = pg.transform.rotozoom(scr.bgi_sfc, 0, 0.5)
+        """
 
         for event in pg.event.get():
             if event.type == pg.QUIT:
                 return
+            if event.type == KEYDOWN:
+                if event.key == K_ESCAPE:
+                    return
+                # Spaceが押されたら攻撃
+                if event.key == K_SPACE:
+                    gun.go(scr, kkt)
 
-        # こうかとんと爆弾のアップデート
+        # こうかとんと攻撃のアップデート
         kkt.update(scr)
-        bkd.update(scr)
+        gun.update(scr)
+        count_text.update(str(bomb_count)+"/"+str(bomb_number), scr)
+        
+        for i in range(bomb_draw):
+            # こうかとんと爆弾の衝突判定
+            bombs[i].update(scr)
+            if kkt.rct.colliderect(bombs[i].rct): 
+                end_text.blit(scr)    # Game Overのテキスト
+                pg.display.update()         # 画面更新
+                time.sleep(2)               # 2秒後に以下を実行
+                return
 
-        # こうかとんと爆弾の衝突判定
-        if kkt.rct.colliderect(bkd.rct):
-            return
+            # 爆弾と攻撃の衝突判定
+            if bombs[i].rct.colliderect(gun.rct):
+                if Bomb.hantei[bombs[i].count]:
+                    Bomb.hantei[bombs[i].count] = False
+                    bomb_count += 1
+        
+        # 一定時間毎に描画する爆弾の数を増やす
+        if int(tim.timer) % 3 == 0 and bomb_draw < bomb_number and timer_hantei != tim.timer:
+            bomb_draw += 1
+            timer_hantei = tim.timer
+        
+        if bomb_count == bomb_number:
+            if True not in Bomb.hantei:
+                clear_text.blit(scr)    # Game Clearのテキスト
+                pg.display.update()         # 画面更新
+                time.sleep(2)               # 2秒後に以下を実行
+                return
 
         pg.display.update()
         clock.tick(1000)
@@ -150,6 +268,3 @@ if __name__ == "__main__":
     main()  # main関数の呼び出し
     pg.quit()
     sys.exit()
-
-
-
