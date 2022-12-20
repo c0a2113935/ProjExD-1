@@ -1,5 +1,7 @@
 # 第５回
 ## 負けるな！こうかとん(ex05/fight_kokaton.py)
+![image](https://user-images.githubusercontent.com/85731445/208621194-b6978fd4-ff6b-4fdf-b262-6191a7977b84.png)
+![image](https://user-images.githubusercontent.com/85731445/208621319-9cad25a9-fb45-4e1b-bce6-6f611b7ded8f.png)
 ### ゲーム概要
 - ex05/fight_kokaton.pyを実行すると、800x450のスクリーンに草原が描写され、こうかとんを移動させ飛び回る爆弾から逃げるゲーム
 - こうかとんが爆弾と接触するとゲームオーバーで終了する
