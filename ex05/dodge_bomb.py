@@ -162,7 +162,7 @@ def check_bound(obj_rct, scr_rct):
 ### メイン関数
 def main():
     # 爆弾の総個数
-    bomb_number = 30
+    bomb_number = 3
     # 何秒ごとに爆弾が増える
     bomb_plus = 1
 
