@@ -98,7 +98,7 @@ def main():
                     chara_live = False
         
         if chara_live:
-            if tmr%60 == 0:
+            if tmr%50 == 0:
                 y = jamp_chara()
         else:
             if y < 1920+240:
