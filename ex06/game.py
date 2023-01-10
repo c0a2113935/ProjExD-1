@@ -37,6 +37,7 @@ def jamp_chara(): # キャラクターのジャンプ関数
         y = 580
     return y
 
+
 def main():
     global jamp, y
     pg.display.set_caption("ゲームタイトル（仮）")       # ゲームタイトル
