@@ -3,8 +3,8 @@ import sys
 
 # ステージリスト
 syougai = [
-    1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1,
-    1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 
+    1, 1, 1, 1, 1, 0, 1, 1, 1, 2, 1, 1, 1, 1, 2, 1,
+    1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 2, 2, 1, 1, 1, 
     0, 0, 0, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 0, 0
     ]
 
@@ -56,7 +56,9 @@ def main():
         pg.image.load("ex06/human_3.png"),
         pg.image.load("ex06/human_4.png")
     ]
+    img_iwa = pg.image.load("ex06/iwa.png")
     chara_live = True   # キャラクターの生存判定
+    death_reason = 0    # 1:穴, 2:岩
     tmr = 0
     count = 0
 
@@ -90,19 +92,25 @@ def main():
             hantei = int(i+num)
             if num+16 >= len(syougai):
                 hantei = int(i+num)%len(syougai)
-            if syougai[hantei] == 1:
-                scrn_sfc.blit(img_bg[0], [i*160-x, 0])
+            if syougai[hantei] > 0:
+                scrn_sfc.blit(img_bg[0], [i*160-x, 0])  #地面がある背景の描画
+                if syougai[hantei] == 2:                #岩の描画
+                    scrn_sfc.blit(img_iwa, [i*160-x, 700])
+                    if i == 1 and x >= 30 and y >= 460:
+                        chara_live = False
             elif syougai[hantei] == 0:
-                scrn_sfc.blit(img_bg[1], [i*160-x, 0])
+                scrn_sfc.blit(img_bg[1], [i*160-x, 0])  #地面が無い背景（穴）の描画
                 if i == 1 and x >= 30 and y == 580:
                     chara_live = False
+                    death_reason = 1
         
         if chara_live:
             if tmr%50 == 0:
                 y = jamp_chara()
         else:
-            if y < 1920+240:
-                y += 10         # キャラクターが（穴によって）死んだ判定になったら穴の底に落ちる
+            if death_reason == 1:
+                if y < 1920+240:
+                    y += 10         # キャラクターが（穴によって）死んだ判定になったら穴の底に落ちる
         scrn_sfc.blit(img_chara[(count%4)], [120, y])    # キャラクターの描画
 
         pg.display.update()
