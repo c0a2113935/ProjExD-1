@@ -10,7 +10,7 @@ syougai = [
     1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 2, 2, 1, 1, 1,
     1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 0
 ]
-5
+
 jamp = False
 jamp_high = 160
 jamp_kakeru = 1/5
@@ -72,9 +72,14 @@ def main():
 
     # GameOver画面の設定(内野)
     fonto = pg.font.Font(None, 200)
+    small_fonto = pg.font.Font(None, 100)
     gameover_text = fonto.render(str("Game Over"), True, (255, 0, 0))
     gameover_text_rct = gameover_text.get_rect(
         center=(1920//2, 1080//2))
+    gameover_comment = small_fonto.render(
+        str("press space to finish"), True, (0, 0, 0))
+    gameover_comment_rct = gameover_text.get_rect(
+        center=(1920//2, 900))
 
     while True:
         tmr = tmr + 1
@@ -139,12 +144,28 @@ def main():
                 # GameOver機能(内野)
                 else:
                     scrn_sfc.blit(gameover_text, gameover_text_rct)
+                    scrn_sfc.blit(gameover_comment, gameover_comment_rct)
+
+                    score_text = fonto.render(
+                        str(f"SCORE : {math.floor(score_time)}"), True, (0, 0, 0))
+                    score_text_rct = score_text.get_rect(
+                        center=(1920//2, 700))
+                    scrn_sfc.blit(score_text, score_text_rct)
+
                     key_status = pg.key.get_pressed()
                     if key_status[pg.K_SPACE]:
                         return
             # GameOver機能(内野)
             elif death_reason == 2:
                 scrn_sfc.blit(gameover_text, gameover_text_rct)
+                scrn_sfc.blit(gameover_comment, gameover_comment_rct)
+
+                score_text = fonto.render(
+                    str(f"SCORE : {math.floor(score_time)}"), True, (0, 0, 0))
+                score_text_rct = score_text.get_rect(
+                    center=(1920//2, 700))
+                scrn_sfc.blit(score_text, score_text_rct)
+
                 key_status = pg.key.get_pressed()
                 if key_status[pg.K_SPACE]:
                     return
