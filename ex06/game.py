@@ -64,16 +64,19 @@ def main():
         pg.image.load("ex06/human_4.png")
     ]
     img_iwa = pg.image.load("ex06/iwa.png")
+    img_kumo=pg.image.load("ex06/kumo.png") 
     chara_live = True   # キャラクターの生存判定
     death_reason = 0    # 1:穴, 2:岩
     tmr = 0
     count = 0
+
 
     # GameOver画面の設定(内野)
     fonto = pg.font.Font(None, 200)
     gameover_text = fonto.render(str("Game Over"), True, (255, 0, 0))
     gameover_text_rct = gameover_text.get_rect(
         center=(1920//2, 1080//2))
+
 
     while True:
         tmr = tmr + 1
@@ -117,6 +120,9 @@ def main():
                 if i == 1 and x >= 30 and y == 580:
                     chara_live = False
                     death_reason = 1
+                    
+        #雲を表示（吉田）
+        scrn_sfc.blit(img_kumo, (200, 100))
 
         # 経過時間の表示(内野)
         score_time = time.time() - s_time
@@ -149,8 +155,10 @@ def main():
         clock.tick(1000)
 
 
+
 if __name__ == "__main__":
     pg.init()
+
     main()
     pg.quit()
     sys.exit()
