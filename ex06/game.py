@@ -6,10 +6,11 @@ import math
 # ステージリスト（12の倍数個じゃなくてもなんでも大丈夫です）
 # 0:穴, 1:地面, 2:岩
 syougai = [
-    1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1,
+    1, 1, 1, 1, 1, 0, 1, 1 , 1, 1, 1, 1, 2, 1, 1, 1,
     1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 2, 2, 1, 1, 1,
     1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 0
-
+    1, 0, 0, 0, 0, 0, 1, 1, 1, 1, 2, 1, 1, 1, 1, 0
+    ]
 
 jamp = False
 jamp_high = 160
@@ -67,7 +68,7 @@ def main():
     ]
     img_iwa = pg.image.load("ex06/iwa.png").convert_alpha()
     img_kumo = pg.image.load("ex06/kumo.png").convert_alpha()
-    chara_live = True   # キャラクターの生存判定
+    chara_live = 1   # キャラクターの生存判定
     death_reason = 0    # 1:穴, 2:岩
     tmr = 0
     count = 0
@@ -118,16 +119,13 @@ def main():
                 if syougai[hantei] == 2:  # 岩の描画
                     scrn_sfc.blit(img_iwa, [i*160-x, 700])
                     if i == 1 and x >= 30 and y >= 460:
-                        chara_live = False
+                        chara_live = 0
                         death_reason = 2
             elif syougai[hantei] == 0:
                 scrn_sfc.blit(img_bg[1], [i*160-x, 0])  # 地面が無い背景（穴）の描画
                 if i == 1 and x >= 30 and y == 580:
-                    chara_live = False
+                    chara_live = 0
                     death_reason = 1
-
-        # 雲を表示（吉田）
-        scrn_sfc.blit(img_kumo, (200, 100))
 
         # 経過時間の表示(内野)
         if death_reason == 0:
@@ -138,15 +136,17 @@ def main():
         if chara_live:
             if tmr % 50 == 0:
                 y = jamp_chara()
-            scrn_sfc.blit(img_chara[(count % 4)], [120, y])    # キャラクターの描画
+            scrn_sfc.blit(img_chara[(count % 4)], [120, y])    # キャラクターの描画  
         else:
             if death_reason == 1:
                 if y < 1920+240:
+                    scrn_sfc.blit(img_bg[1], (130, 0))
                     y += 10         # キャラクターが（穴によって）死んだ判定になったら穴の底に落ちる
-                    scrn_sfc.blit(img_chara[(count % 4)], [120, y])    # キャラクターの描画
+                    scrn_sfc.blit(img_chara[(count % 4)], [120, y])    # キャラクターの描画 
                 # GameOver機能(内野)
                 else:
                     scrn_sfc.blit(gameover_text, gameover_text_rct)
+
                     scrn_sfc.blit(gameover_comment, gameover_comment_rct)
 
                     score_text = fonto.render(
@@ -156,9 +156,10 @@ def main():
                     scrn_sfc.blit(score_text, score_text_rct)
 
                     key_status = pg.key.get_pressed()
+
                     if key_status[pg.K_SPACE]:
                         return
-            # GameOver機能(内野)
+
             elif death_reason == 2:
                 scrn_sfc.blit(img_chara[(count % 4)], [120, y])    # キャラクターの描画
                 scrn_sfc.blit(gameover_text, gameover_text_rct)
@@ -173,6 +174,9 @@ def main():
                 key_status = pg.key.get_pressed()
                 if key_status[pg.K_SPACE]:
                     return
+        
+        # 雲を表示（吉田）
+        scrn_sfc.blit(img_kumo, (200, 100))
 
         pg.display.update()
         clock.tick(1000)
