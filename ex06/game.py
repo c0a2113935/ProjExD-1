@@ -145,6 +145,7 @@ def main():
                         return
             # GameOver機能(内野)
             elif death_reason == 2:
+                scrn_sfc.blit(img_bg[0], [i*160-x, 0])
                 scrn_sfc.blit(img_chara[(count % 4)], [120, y])    # キャラクターの描画
                 scrn_sfc.blit(gameover_text, gameover_text_rct)
                 key_status = pg.key.get_pressed()
