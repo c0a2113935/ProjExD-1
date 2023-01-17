@@ -10,7 +10,7 @@ syougai = [
     1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 2, 2, 1, 1, 1, 
     1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 0
     ]
-5
+
 jamp = False
 jamp_high = 160
 jamp_kakeru = 1/5
@@ -45,7 +45,9 @@ def jamp_chara():  # キャラクターのジャンプ関数
 def main():
     global jamp, y
     pg.display.set_caption("ゲームタイトル（仮）")       # ゲームタイトル
-    scrn_sfc = pg.display.set_mode((1920, 1060))        # 画面サイズ
+    w = 1920
+    h = 1060
+    scrn_sfc = pg.display.set_mode((w, h))        # 画面サイズ
     scrn_rct = scrn_sfc.get_rect()
     clock = pg.time.Clock()
     # 開始時間(内野)
@@ -53,8 +55,8 @@ def main():
 
     # 背景画像
     img_bg = [
-        pg.image.load("ex06/bg.jpg"),
-        pg.image.load("ex06/ana.jpg")
+        pg.image.load("ex06/bg.jpg").convert(),
+        pg.image.load("ex06/ana.jpg").convert()
     ]
     #img_bg_rct = img_bg.get_rect()
     img_chara = [
@@ -129,7 +131,9 @@ def main():
 
                 # GameOver機能(内野)
                 else:
-                    return
+                    font = pg.font.Font(None, 120)
+                    end_text = font.render("Game over", True, "red")
+                    scrn_sfc.blit(end_text, w/2, h/2)
             elif death_reason == 2:
                 return
 
