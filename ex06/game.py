@@ -141,8 +141,9 @@ def main():
 
         # 経過時間の表示(内野)
         if death_reason == 0:
-            score_time = time.time()- s_time
-        txt = fonto.render(str(math.floor(score_time)), True, (0, 0, 0))
+            score_time = time.time() - s_time
+        txt = fonto.render(str(math.floor(score_time*10)), True, (0, 0, 0))
+        
         scrn_sfc.blit(txt, (0, 0))
 
         if chara_live:
@@ -162,7 +163,7 @@ def main():
                     scrn_sfc.blit(gameover_restart, gameover_restart_rct)
 
                     score_text = fonto.render(
-                        str(f"SCORE : {math.floor(score_time)}"), True, (0, 0, 0))
+                        str(f"SCORE : {math.floor(score_time*10)}"), True, (0, 0, 0))
                     score_text_rct = score_text.get_rect(
                         center=(1920//2, 700 - 200))
                     scrn_sfc.blit(score_text, score_text_rct)
@@ -187,7 +188,7 @@ def main():
                 scrn_sfc.blit(gameover_restart, gameover_restart_rct)
 
                 score_text = fonto.render(
-                    str(f"SCORE : {math.floor(score_time)}"), True, (0, 0, 0))
+                    str(f"SCORE : {math.floor(score_time*10)}"), True, (0, 0, 0))
                 score_text_rct = score_text.get_rect(
                     center=(1920//2, 700 - 200))
                 scrn_sfc.blit(score_text, score_text_rct)
