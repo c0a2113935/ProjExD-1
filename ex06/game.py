@@ -44,8 +44,6 @@ def jamp_chara():  # キャラクターのジャンプ関数
 
 def main():
     global jamp, y
-    img = pg.image.load("kumo.png")
-    scrn_sfc.blit(img, (100, 100))
     pg.display.set_caption("ゲームタイトル（仮）")       # ゲームタイトル
     scrn_sfc = pg.display.set_mode((1920, 1060))        # 画面サイズ
     scrn_rct = scrn_sfc.get_rect()
@@ -66,10 +64,12 @@ def main():
         pg.image.load("ex06/human_4.png")
     ]
     img_iwa = pg.image.load("ex06/iwa.png")
+    img_kumo=pg.image.load("ex06/kumo.png") 
     chara_live = True   # キャラクターの生存判定
     death_reason = 0    # 1:穴, 2:岩
     tmr = 0
     count = 0
+
 
     while True:
         tmr = tmr + 1
@@ -113,6 +113,9 @@ def main():
                 if i == 1 and x >= 30 and y == 580:
                     chara_live = False
                     death_reason = 1
+                    
+        #雲を表示（吉田）
+        scrn_sfc.blit(img_kumo, (200, 100))
 
         # 経過時間の表示(内野)
         fonto = pg.font.Font(None, 200)
