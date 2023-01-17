@@ -137,7 +137,7 @@ def main():
             if tmr % 50 == 0:
                 y = jamp_chara()
             scrn_sfc.blit(img_chara[(count % 4)], [120, y])    # キャラクターの描画  
-        else:
+        else: 
             if death_reason == 1:
                 if y < 1920+240:
                     scrn_sfc.blit(img_bg[1], (130, 0))
