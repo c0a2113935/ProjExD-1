@@ -9,7 +9,7 @@ syougai = [
     1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1,
     1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 2, 2, 1, 1, 1,
     1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 0
-]
+
 
 jamp = False
 jamp_high = 160
@@ -45,7 +45,9 @@ def jamp_chara():  # キャラクターのジャンプ関数
 def main():
     global jamp, y
     pg.display.set_caption("ゲームタイトル（仮）")       # ゲームタイトル
-    scrn_sfc = pg.display.set_mode((1920, 1060))        # 画面サイズ
+    w = 1920
+    h = 1060
+    scrn_sfc = pg.display.set_mode((w, h))        # 画面サイズ
     scrn_rct = scrn_sfc.get_rect()
     clock = pg.time.Clock()
     # 開始時間(内野)
@@ -53,18 +55,18 @@ def main():
 
     # 背景画像
     img_bg = [
-        pg.image.load("ex06/bg.jpg"),
-        pg.image.load("ex06/ana.jpg")
+        pg.image.load("ex06/bg.jpg").convert(),
+        pg.image.load("ex06/ana.jpg").convert()
     ]
     #img_bg_rct = img_bg.get_rect()
     img_chara = [
-        pg.image.load("ex06/human_1.png"),
-        pg.image.load("ex06/human_2.png"),
-        pg.image.load("ex06/human_3.png"),
-        pg.image.load("ex06/human_4.png")
+        pg.image.load("ex06/human_1.png").convert_alpha(),
+        pg.image.load("ex06/human_2.png").convert_alpha(),
+        pg.image.load("ex06/human_3.png").convert_alpha(),
+        pg.image.load("ex06/human_4.png").convert_alpha()
     ]
-    img_iwa = pg.image.load("ex06/iwa.png")
-    img_kumo = pg.image.load("ex06/kumo.png")
+    img_iwa = pg.image.load("ex06/iwa.png").convert_alpha()
+    img_kumo = pg.image.load("ex06/kumo.png").convert_alpha()
     chara_live = True   # キャラクターの生存判定
     death_reason = 0    # 1:穴, 2:岩
     tmr = 0
@@ -136,11 +138,12 @@ def main():
         if chara_live:
             if tmr % 50 == 0:
                 y = jamp_chara()
+            scrn_sfc.blit(img_chara[(count % 4)], [120, y])    # キャラクターの描画
         else:
             if death_reason == 1:
                 if y < 1920+240:
                     y += 10         # キャラクターが（穴によって）死んだ判定になったら穴の底に落ちる
-
+                    scrn_sfc.blit(img_chara[(count % 4)], [120, y])    # キャラクターの描画
                 # GameOver機能(内野)
                 else:
                     scrn_sfc.blit(gameover_text, gameover_text_rct)
@@ -157,6 +160,7 @@ def main():
                         return
             # GameOver機能(内野)
             elif death_reason == 2:
+                scrn_sfc.blit(img_chara[(count % 4)], [120, y])    # キャラクターの描画
                 scrn_sfc.blit(gameover_text, gameover_text_rct)
                 scrn_sfc.blit(gameover_comment, gameover_comment_rct)
 
@@ -169,8 +173,6 @@ def main():
                 key_status = pg.key.get_pressed()
                 if key_status[pg.K_SPACE]:
                     return
-
-        scrn_sfc.blit(img_chara[(count % 4)], [120, y])    # キャラクターの描画
 
         pg.display.update()
         clock.tick(1000)
