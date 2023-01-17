@@ -91,6 +91,10 @@ def main():
         str("press space to finish"), True, (0, 0, 0))
     gameover_comment_rct = gameover_text.get_rect(
         center=(1920//2, 900 - 200))
+    gameover_restart = small_fonto.render(
+        str("press R key to restart"), True, (0, 0, 0))
+    gameover_restart_rct = gameover_text.get_rect(
+        center=(1920//2, 1000 - 200))
 
     while True: 
         tmr = tmr + 1
@@ -137,7 +141,7 @@ def main():
 
         # 経過時間の表示(内野)
         if death_reason == 0:
-            score_time = time.time() - s_time
+            score_time = time.time()- s_time
         txt = fonto.render(str(math.floor(score_time)), True, (0, 0, 0))
         scrn_sfc.blit(txt, (0, 0))
 
@@ -154,8 +158,8 @@ def main():
                 # GameOver機能(内野)
                 else:
                     scrn_sfc.blit(gameover_text, gameover_text_rct)
-
                     scrn_sfc.blit(gameover_comment, gameover_comment_rct)
+                    scrn_sfc.blit(gameover_restart, gameover_restart_rct)
 
                     score_text = fonto.render(
                         str(f"SCORE : {math.floor(score_time)}"), True, (0, 0, 0))
@@ -167,12 +171,20 @@ def main():
 
                     if key_status[pg.K_SPACE]:
                         return
+                    elif key_status[pg.K_r]:
+                        chara_live = 1   # キャラクターの生存判定
+                        death_reason = 0    # 1:穴, 2:岩
+                        tmr = 0
+                        count = 0
+                        s_time = time.time()
+                        score_time = 0
 
             elif death_reason == 2:
                 scrn_sfc.blit(img_bg[0], [i*160-x, 0])
                 scrn_sfc.blit(img_chara[(count % 4)], [120, y])    # キャラクターの描画
                 scrn_sfc.blit(gameover_text, gameover_text_rct)
                 scrn_sfc.blit(gameover_comment, gameover_comment_rct)
+                scrn_sfc.blit(gameover_restart, gameover_restart_rct)
 
                 score_text = fonto.render(
                     str(f"SCORE : {math.floor(score_time)}"), True, (0, 0, 0))
@@ -183,6 +195,13 @@ def main():
                 key_status = pg.key.get_pressed()
                 if key_status[pg.K_SPACE]:
                     return
+                elif key_status[pg.K_r]:
+                    chara_live = 1   # キャラクターの生存判定
+                    death_reason = 0    # 1:穴, 2:岩
+                    tmr = 0
+                    count = 0
+                    s_time = time.time()
+                    score_time = 0
         
         # 雲を表示（吉田）
         scrn_sfc.blit(img_kumo, (200, 100))
