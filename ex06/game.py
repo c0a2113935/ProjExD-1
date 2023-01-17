@@ -10,7 +10,7 @@ syougai = [
     1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 2, 2, 1, 1, 1, 
     1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 0
     ]
-
+5
 jamp = False
 jamp_high = 160
 jamp_kakeru = 1/5
@@ -90,8 +90,8 @@ def main():
                         y += 1
 
         # 背景スクロールの描画
-        if chara_live:
-            x = (tmr % 40)*4
+        if chara_live:      # キャラクターが生きていたら
+            x = (tmr%40)*4
             if x == 0:
                 count += 1
                 if count >= len(syougai):
@@ -107,6 +107,7 @@ def main():
                     scrn_sfc.blit(img_iwa, [i*160-x, 700])
                     if i == 1 and x >= 30 and y >= 460:
                         chara_live = False
+                        death_reason = 2
             elif syougai[hantei] == 0:
                 scrn_sfc.blit(img_bg[1], [i*160-x, 0])  # 地面が無い背景（穴）の描画
                 if i == 1 and x >= 30 and y == 580:
@@ -131,6 +132,8 @@ def main():
                 # GameOver機能(内野)
                 else:
                     return
+            elif death_reason == 2:
+                return
 
         scrn_sfc.blit(img_chara[(count % 4)], [120, y])    # キャラクターの描画
 
