@@ -137,7 +137,7 @@ def main():
         else:
             if death_reason == 1:
                 if y < 1920+240:
-                    y += 3         # キャラクターが（穴によって）死んだ判定になったら穴の底に落ちる
+                    y += 10         # キャラクターが（穴によって）死んだ判定になったら穴の底に落ちる
                     scrn_sfc.blit(img_chara[(count % 4)], [120, y])    # キャラクターの描画
                 # GameOver機能(内野)
                 else:
