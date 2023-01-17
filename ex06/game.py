@@ -8,7 +8,7 @@ syougai = [
     1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 2, 2, 1, 1, 1, 
     1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 0
     ]
-
+5
 jamp = False
 jamp_high = 160
 jamp_kakeru = 1/5
@@ -82,7 +82,7 @@ def main():
                         y += 1
 
         # 背景スクロールの描画
-        if chara_live:
+        if chara_live:      # キャラクターが生きていたら
             x = (tmr%40)*4
             if x == 0:
                 count += 1
@@ -105,14 +105,15 @@ def main():
                     chara_live = False
                     death_reason = 1
         
-        if chara_live:
-            if tmr%50 == 0:
-                y = jamp_chara()
-        else:
+        if chara_live != True:
             if death_reason == 1:
                 if y < 1920+240:
                     y += 10         # キャラクターが（穴によって）死んだ判定になったら穴の底に落ちる
-        scrn_sfc.blit(img_chara[(count%4)], [120, y])    # キャラクターの描画
+                    scrn_sfc.blit(img_chara[(count%4)], [120, y])    # キャラクターの描画
+        else:
+            if tmr%50 == 0:
+                y = jamp_chara()
+            scrn_sfc.blit(img_chara[(count%4)], [120, y])    # キャラクターの描画
 
         pg.display.update()
         clock.tick(1000)
