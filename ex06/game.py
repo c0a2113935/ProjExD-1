@@ -7,7 +7,7 @@ import math
 # 0:穴, 1:地面, 2:岩
 syougai = [
     1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1,
-    1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 2, 2, 1, 1, 1, 
+    1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 2, 2, 1, 1, 1,
     1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 0
     ]
 
@@ -71,6 +71,12 @@ def main():
     tmr = 0
     count = 0
 
+    # GameOver画面の設定(内野)
+    fonto = pg.font.Font(None, 200)
+    gameover_text = fonto.render(str("Game Over"), True, (255, 0, 0))
+    gameover_text_rct = gameover_text.get_rect(
+        center=(1920//2, 1080//2))
+
     while True:
         tmr = tmr + 1
         #scrn_sfc.blit(pgbg_sfc, pgbg_rct)
@@ -91,7 +97,7 @@ def main():
 
         # 背景スクロールの描画
         if chara_live:      # キャラクターが生きていたら
-            x = (tmr%40)*4
+            x = (tmr % 40)*4
             if x == 0:
                 count += 1
                 if count >= len(syougai):
@@ -115,8 +121,6 @@ def main():
                     death_reason = 1
 
         # 経過時間の表示(内野)
-        fonto = pg.font.Font(None, 200)
-
         score_time = time.time() - s_time
         txt = fonto.render(str(math.floor(score_time)), True, (0, 0, 0))
         scrn_sfc.blit(txt, (0, 0))
@@ -131,11 +135,15 @@ def main():
 
                 # GameOver機能(内野)
                 else:
-                    font = pg.font.Font(None, 120)
-                    end_text = font.render("Game over", True, "red")
-                    scrn_sfc.blit(end_text, w/2, h/2)
+                    scrn_sfc.blit(gameover_text, gameover_text_rct)
+                    key_status = pg.key.get_pressed()
+                    if key_status[pg.K_SPACE]:
+                        return
             elif death_reason == 2:
-                return
+                scrn_sfc.blit(gameover_text, gameover_text_rct)
+                key_status = pg.key.get_pressed()
+                if key_status[pg.K_SPACE]:
+                    return
 
         scrn_sfc.blit(img_chara[(count % 4)], [120, y])    # キャラクターの描画
 
