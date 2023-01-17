@@ -9,7 +9,7 @@ syougai = [
     1, 1, 1, 1, 1, 0, 1, 1 , 1, 1, 1, 1, 2, 1, 1, 1,
     1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 2, 2, 1, 1, 1,
     1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 0,
-    1, 0, 0, 1, 1, 0, 1, 1, 1, 1, 2, 1, 1, 1, 1, 0
+    1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 2, 1, 1, 1, 1, 0
     ]
 
 jamp = False
@@ -84,7 +84,7 @@ def main():
     gameover_comment_rct = gameover_text.get_rect(
         center=(1920//2, 900 - 200))
 
-    while True:
+    while True: 
         tmr = tmr + 1
         #scrn_sfc.blit(pgbg_sfc, pgbg_rct)
         for event in pg.event.get():
