@@ -14,6 +14,7 @@ jamp_kakeru = 1/5
 jamp_count = 0
 y = 580
 
+
 def jamp_chara(): # キャラクターのジャンプ関数
     global jamp, jamp_high, jamp_kakeru, y, jamp_count
     if jamp == True:
@@ -40,6 +41,8 @@ def jamp_chara(): # キャラクターのジャンプ関数
 
 def main():
     global jamp, y
+    img = pg.image.load("kumo.png")
+    scrn_sfc.blit(img, (100, 100))
     pg.display.set_caption("ゲームタイトル（仮）")       # ゲームタイトル
     scrn_sfc = pg.display.set_mode((1920, 1060))        # 画面サイズ
     scrn_rct = scrn_sfc.get_rect()
@@ -120,6 +123,7 @@ def main():
 
 if __name__ == "__main__":
     pg.init()
+
     main()
     pg.quit()
     sys.exit()
